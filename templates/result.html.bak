@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Prediction Result</h2>
+    <div id="resultContainer">
+        <h3>Predicted Price Range:</h3>
+        <p id="predictedPriceRange"></p>
+        <h3>Input Features:</h3>
+        <ul id="inputFeatures">
+            <!-- Input features will be displayed here dynamically -->
+        </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

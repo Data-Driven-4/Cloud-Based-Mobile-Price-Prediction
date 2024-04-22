@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XGBoost Prediction Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>XGBoost Prediction Result</h2>
+    <div class="result">
+        <p><strong>Pixel Height:</strong> <span id="px_height"></span></p>
+        <p><strong>Battery Power:</strong> <span id="battery_power"></span></p>
+        <p><strong>RAM:</strong> <span id="ram"></span></p>
+        <p><strong>Primary Camera:</strong> <span id="pc"></span></p>
+        <p><strong>Internal Memory:</strong> <span id="int_memory"></span></p>
+        <p><strong>Predicted Class:</strong> <span id="predicted_class"></span></p>
+    </div>
+
+    <script>
+        // Get the prediction result from the URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const predictedClass = urlParams.get('predicted_class');
+        const pxHeight = urlParams.get('px_height');
+        const batteryPower = urlParams.get('battery_power');
+        const ram = urlParams.get('ram');
+        const pc = urlParams.get('pc');
+        const intMemory = urlParams.get('int_memory');
+
+        // Display the prediction result
+        document.getElementById('predicted_class').textContent = predictedClass;
+        document.getElementById('px_height').textContent = pxHeight;
+        document.getElementById('battery_power').textContent = batteryPower;
+        document.getElementById('ram').textContent = ram;
+        document.getElementById('pc').textContent = pc;
+        document.getElementById('int_memory').textContent = intMemory;
+    </script>
+</body>
+
+</html>

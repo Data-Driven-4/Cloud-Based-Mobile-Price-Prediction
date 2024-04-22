@@ -1,0 +1,28 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the URL parameters
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    // Get the predicted price range from the URL parameter
+    const predictedPriceRange = urlParams.get("predicted_price_range");
+
+    // Display the predicted price range
+    const predictedPriceRangeElement = document.getElementById("predictedPriceRange");
+    predictedPriceRangeElement.textContent = predictedPriceRange;
+
+    // Get the input features from the URL parameters
+    const inputFeatures = {};
+    urlParams.forEach((value, key) => {
+        if (key !== "predicted_price_range") {
+            inputFeatures[key] = value;
+        }
+    });
+
+    // Display the input features
+    const inputFeaturesList = document.getElementById("inputFeatures");
+    for (const [feature, value] of Object.entries(inputFeatures)) {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<span>${feature}:</span> ${value}`;
+        inputFeaturesList.appendChild(listItem);
+    }
+});

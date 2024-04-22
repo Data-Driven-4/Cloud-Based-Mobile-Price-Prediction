@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XGBoost Prediction</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Enter Mobile Phone Features</h2>
+    <form id="predictionForm">
+        <!-- Include only the selected features -->
+        <div class="inputField">
+            <label for="ram">RAM (MB):</label>
+            <input type="range" id="ram" name="ram" min="512" max="4096" step="128" value="2048">
+            <span id="ramValue">2048</span>
+        </div>
+
+        <div class="inputField">
+            <label for="pc">Primary Camera (MP):</label>
+            <input type="range" id="pc" name="pc" min="0" max="20" step="1" value="10">
+            <span id="pcValue">10</span>
+        </div>
+
+        <div class="inputField">
+            <label for="int_memory">Internal Memory (GB):</label>
+            <input type="range" id="int_memory" name="int_memory" min="2" max="128" step="2" value="16">
+            <span id="int_memoryValue">16</span>
+        </div>
+
+        <div class="inputField">
+            <label for="px_height">Pixel Height:</label>
+            <input type="range" id="px_height" name="px_height" min="0" max="2000" step="10" value="500">
+            <span id="px_heightValue">500</span>
+        </div>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

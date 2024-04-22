@@ -1,0 +1,62 @@
+from flask import Flask, render_template, request
+import boto3
+
+# Initialize Flask application
+app = Flask(__name__)
+
+# Define the names of the features used in the model
+feature_names = ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 
+                 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 
+                 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi']
+
+# Define the endpoint name
+endpoint_name = 'xgboost-2024-04-21-06-21-18-042'
+
+# Define AWS credentials and region
+aws_access_key_id = 'ASIAUYYOMVIYBB53RZIG'
+aws_secret_access_key = 'w/B2GXlUrP2I4CaUNU4+lcZMkkrmrwdWGKucnW2P'
+aws_session_token = 'IQoJb3JpZ2luX2VjEPb//////////wEaCXVzLXdlc3QtMiJGMEQCIA3BxUVfhcU2Lt2cZPr/3+JKNlLzeoRg5MtsvzWfbYi+AiAZuZxFSS0RRMKwLi9PY67xVYAgqfNUE5O1+ukVIcmaGyq6Agg/EAEaDDMyODA1ODMxNzM2MCIMyC6Mwl7Hh5o5C3jkKpcCWq/95J6BRn8ax7likTaCPOs6CSbSrR+5Q1RyPeLwkK6GwtYVOU6i08LLuloUwX0zV9aEdc39HQcn3hsFawUUX1u7U5I9kXqLSLUwAd6RJn2TRfzfwWorPPkq51J++yTLlOWd+6tit02pc4/8IuNz7PvO61rhILVtql5aEVejKt0MFN6Fvb+7CHYFSXGVgD9kquGpbbFvdG+dbWlw2gl5DNVJj5KBOM2WtJKRvMREchPS3GBpPXB5xeIIlR2HaFceUCmpQp84C7aeVI21Kfl+1ieVlTWObY8rOQ6s7ktn+P52+eK+rS65Oj4VVZqYsa106OtA1Zwv8DuC3bJW/FNk+GS8/LoIi9Gk7ve7dTjslgGWOHmHzi51MNnVkrEGOp4B0AmnRW4MBA1E3g9ilAxeoq5H28NSwAQfq6cv2MKeBr8sPrJ2CdDXeduEUE/3GXgHksZseqzfZX6cdmzcubE/aj43CTGhbfrzN82UePoMntitmVncvOP38AQSELMGa2AjOc2LAQgbST1Rzr5SAc76PDtkKRCdksAOl+YB31NWyl5x9H4K0OCS2d7UX/Qp5igphha93hUYn4hG4KmgsRA='
+aws_region = 'us-east-1'
+
+# Define the SageMaker runtime client
+runtime_client = boto3.client('runtime.sagemaker',
+                              region_name=aws_region,
+                              aws_access_key_id=aws_access_key_id,
+                              aws_secret_access_key=aws_secret_access_key,
+                              aws_session_token=aws_session_token)
+
+# Define a function to preprocess input data
+def preprocess_input(data):
+    return ','.join(str(data[feature]) for feature in feature_names)
+
+# Define the prediction function
+def predict(data):
+    response = runtime_client.invoke_endpoint(EndpointName=endpoint_name, ContentType='text/csv', Body=data)
+    result = response['Body'].read().decode('utf-8')
+    return result
+
+# Define the home route
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+# Define the prediction route
+@app.route('/predict', methods=['POST'])
+def predict_route():
+    try:
+        # Get form data
+        form_data = request.form.to_dict()
+        
+        # Preprocess input data
+        input_data = preprocess_input(form_data)
+        
+        # Make prediction
+        prediction = predict(input_data)
+        
+        # Render result template with prediction
+        return render_template('result.html', prediction=prediction)
+    except Exception as e:
+        return str(e)
+
+if __name__ == '__main__':
+    app.run(debug=True)
